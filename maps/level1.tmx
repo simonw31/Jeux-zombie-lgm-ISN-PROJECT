@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.3" orientation="orthogonal" renderorder="right-down" width="30" height="50" tilewidth="64" tileheight="64" infinite="0" nextlayerid="7" nextobjectid="1">
+ <tileset firstgid="1" source="../../DESIGN.tsx"/>
+ <tileset firstgid="541" source="../../tset4.tsx"/>
+ <layer id="1" name="Sol" width="30" height="50">
+  <data encoding="base64" compression="zlib">
+   eJzt1DEOgCAMheEaYpw9kbdwxvtfwsmlgWBJKdW+Jv/KlxKUCIPBYL4xa5rTQvJOVs8ZcH263LSwa+ZTEqRlSm1v7lun14Yb8115+X5btsSEa+duwuD6dfdCf9v3ajTSzZU0XV5px0z6+5ZcvuOIe2653B79rma51u/Zw/8KLtERLK17lp4Tzb0BiCmMHw==
+  </data>
+ </layer>
+ <layer id="5" name="walls" width="30" height="50">
+  <data encoding="base64" compression="zlib">
+   eJzt0tEJwCAMQMF06do1bFftAHYBQQQp6h3kKx8PQiIAAAAA2pzfXJVJA7tP527W7nv8093tzjnq/3wP7ALrKn/xDdE=
+  </data>
+ </layer>
+ <layer id="6" name="arbres" width="30" height="50">
+  <data encoding="base64" compression="zlib">
+   eJzt00EOABAMRNFe3aFwDW6kC3Z2Iib1XzLbDg1mAAAAZ7KnPOhtnv6gF1iqyAxADe/6LvZrlmZ+6VVw89672ZH3rPKHVc4BRDMABwAK3g==
+  </data>
+ </layer>
+</map>
