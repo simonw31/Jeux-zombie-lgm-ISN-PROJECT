@@ -1,37 +1,28 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+def show_start_screen(self):
+    game_folder = path.dirname(__file__)
+    img_folder = path.join(game_folder, 'img')
+    BG_IMG = 'bg_main_menu.jpg'
+    image = pg.image.load(path.join(img_folder, BG_IMG)).convert_alpha()
+    ecran = pg.display.set_mode((1024, 768))
+    done = False
+    ecran.blit(image, (0, 0))
+    pg.display.flip()
 
-import pygame
-from pygame.locals import *
+    # MUSIQUE MENU
+    # TODO voir si possibilité de fadeout le son.
+    pg.mixer.init()
+    sound = pg.mixer.music.load("music.mp3")
+    pg.mixer.music.play(-1)  # repeat 5 times
 
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
-BLUE = (0, 0, 255)
-COLORS = (RED, GREEN, BLUE)
-color_index = 0
-
-pygame.init()
-screen = pygame.display.set_mode((400, 400))
-
-stop = False
-
-clickable_area = pygame.Rect((100, 100), (100, 100))
-rect_surf = pygame.Surface(clickable_area.size)
-rect_surf.fill(COLORS[color_index])
-
-while not stop:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            stop = True
-
-        elif event.type == MOUSEBUTTONUP:  # quand je relache le bouton
-            if event.button == 1:  # 1= clique gauche
-                if clickable_area.collidepoint(event.pos):
-                    color_index = (color_index + 1) % 3
-                    rect_surf.fill(COLORS[color_index])
-
-    screen.fill(0)  # On efface tout l'écran
-    screen.blit(rect_surf, clickable_area)
-    pygame.display.flip()
-
-pygame.quit()
+    while not done:
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                pg.quit()
+                sys.exit()
+                done = True
+            if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
+                print("ok")
+                pg.mixer.music.stop()
+                pg.display.flip()
+                g.new()
+                g.run()

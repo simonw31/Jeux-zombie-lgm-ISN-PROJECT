@@ -1,6 +1,9 @@
 import pygame as pg
 vec = pg.math.Vector2
 
+
+
+
 # define some colors (R, G, B)
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -43,8 +46,33 @@ BULLET_DAMAGE = 10
 
 # Mob settings
 MOB_IMG = 'zombie1_hold.png'
-MOB_SPEED = 150
+MOB_SPEED = [150, 125, 100, 75]
+#TODO si on veut faire spawn + de zombie a 150 de vitesse(norme) rajouter dans le tableau [150]
 MOB_HIT_RECT = pg.Rect(0, 0, 30, 30)
 MOB_HEALTH = 100
 MOB_DAMAGE = 10
 MOB_KNOCKBACK = 20
+AVOID_RADIUS = 50
+
+#Pnj setting
+PNG_IMG = 'soldier1_reload.png'
+PNJ_SPEED = 0
+PNJ_HEALTH = 1000
+PNJ_SPEED = 0
+PNG_HIT_RECT = pg.Rect(0, 0, 30, 30)
+PNG_DAMAGE = 0
+
+#Boss settings
+BOSS_SPEED = 0
+
+#Effect
+MUZZLE_FLASHES = ['muzzle1.png', 'muzzle2.png', 'muzzle3.png', 'muzzle4.png']
+FLASH_DURATION = 40
+
+#Layers
+WALL_LAYER = 1
+PLAYER_LAYER = 2
+BULLET_LAYER = 3
+MOB_LAYER = 2
+EFFECT_LAYER = 4
+PNJ_LAYER = 2

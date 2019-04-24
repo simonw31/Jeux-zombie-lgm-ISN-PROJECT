@@ -52,15 +52,20 @@ class Game:
         self.player_img = pg.image.load(path.join(img_folder, PLAYER_IMG)).convert_alpha()
         self.bullet_img = pg.image.load(path.join(img_folder, BULLET_IMG)).convert_alpha()
         self.mob_img = pg.image.load(path.join(img_folder, MOB_IMG)).convert_alpha()
+        self.png_img = pg.image.load(path.join(img_folder, PNG_IMG)).convert_alpha()
         self.wall_img = pg.image.load(path.join(img_folder, WALL_IMG)).convert_alpha()
         self.wall_img = pg.transform.scale(self.wall_img, (TILESIZE, TILESIZE))
+        self.gun_flashes = []
+        for img in MUZZLE_FLASHES:
+            self.gun_flashes.append(pg.image.load(path.join(img_folder, img)).convert_alpha())
 
     def new(self):
         # initialize all variables and do all the setup for a new game
-        self.all_sprites = pg.sprite.Group()
+        self.all_sprites = pg.sprite.LayeredUpdates()
         self.walls = pg.sprite.Group()
         self.mobs = pg.sprite.Group()
         self.bullets = pg.sprite.Group()
+        self.pngs = pg.sprite.Group()
         # for row, tiles in enumerate(self.map.data):
         #     for col, tile in enumerate(tiles):
         #         if tile == '1':
@@ -69,9 +74,22 @@ class Game:
         #             Mob(self, col, row)
         #         if tile == 'P':
         #             self.player = Player(self, col, row)
-        # TODO modification du spawn du joueur
-        self.player = Player(self, 18, 48)
+        #TODO ajoutez une entités
+        for tile_object in self.map.tmxdata.objects:
+            if tile_object.name == 'player':
+                self.player = Player(self, tile_object.x, tile_object.y)
+            if tile_object.name == 'zombie':
+                Mob(self, tile_object.x, tile_object.y)
+            if tile_object.name == 'wall':
+                Obstacle(self, tile_object.x, tile_object.y, tile_object.width, tile_object.height)
+            if tile_object.name == 'boss':
+                boss(self, tile_object.x, tile_object.y)
+            if tile_object.name == 'pnj':
+                pnj(self, tile_object.x, tile_object.y)
+
         self.camera = Camera(self.map.width, self.map.height)
+        # TODO commande de debug
+        self.draw_debug = False
 
     def run(self):
         # game loop - set self.playing = False to end the game
@@ -81,6 +99,8 @@ class Game:
             self.events()
             self.update()
             self.draw()
+            self.pnjdial()
+
 
     def quit(self):
         pg.quit()
@@ -99,11 +119,33 @@ class Game:
                 self.playing = False
         if hits:
             self.player.pos += vec(MOB_KNOCKBACK, 0).rotate(-hits[0].rot)
+
         # bullets hit mobs
         hits = pg.sprite.groupcollide(self.mobs, self.bullets, False, True)
         for hit in hits:
             hit.health -= BULLET_DAMAGE
             hit.vel = vec(0, 0)
+
+    def pnjdial(self):
+        hits = pg.sprite.spritecollide(self.player, self.pngs, False, collide_hit_rect)
+        dialogue = 0
+        police = pg.font.SysFont('arial', 72)
+
+        if hits:
+            dialogue = 1
+            print("collision ok")
+        elif hits == False:
+            dialogue = 0
+
+        if dialogue == 1:
+            Quete_texte = police.render('Houillon shallah tu meurt', True, (50, 50, 50))
+            self.screen.blit(Quete_texte, (PNG_HIT_RECT.x + 50, PNG_HIT_RECT.y + 50))
+            pg.display.flip()
+
+        else:
+            pass
+            # TODO pnj interaction
+
 
     def draw_grid(self):
         for x in range(0, WIDTH, TILESIZE):
@@ -120,10 +162,17 @@ class Game:
             if isinstance(sprite, Mob):
                 sprite.draw_health()
             self.screen.blit(sprite.image, self.camera.apply(sprite))
+            if self.draw_debug:
+                pg.draw.rect(self.screen, GREEN, self.camera.apply_rect(sprite.hit_rect), 1)
+        if self.draw_debug:
+            for wall in self.walls:
+                pg.draw.rect(self.screen, GREEN, self.camera.apply_rect(wall.rect), 1)
+
         # pg.draw.rect(self.screen, WHITE, self.player.hit_rect, 2)
         # HUD functions
         draw_player_health(self.screen, 10, 10, self.player.health / PLAYER_HEALTH)
         pg.display.flip()
+
 
     def events(self):
         # catch all events here
@@ -133,42 +182,11 @@ class Game:
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_ESCAPE:
                     self.quit()
+                #TODO key de debug
+                if event.key == pg.K_h:
+                    self.draw_debug = not self.draw_debug
 
     def show_start_screen(self):
-
-        game_folder = path.dirname(__file__)
-        img_folder = path.join(game_folder, 'img')
-        BG_IMG = 'bg_main_menu.jpg'
-        image = pg.image.load(path.join(img_folder, BG_IMG)).convert_alpha()
-        ecran = pg.display.set_mode((1024, 768))
-        done = False
-        ecran.blit(image, (0, 0))
-        pg.display.flip()
-
-
-        # MUSIQUE MENU
-        # TODO voir si possibilité de fadeout le son.
-        pg.mixer.init()
-        sound = pg.mixer.music.load("music.mp3")
-        pg.mixer.music.play(-1)  # repeat 5 times
-
-
-
-        while not done:
-            for event in pg.event.get():
-                if event.type == pg.QUIT:
-                    pg.quit()
-                    sys.exit()
-                    done = True
-                if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
-                    print("ok")
-                    pg.mixer.music.stop()
-                    g.new()
-                    g.run()
-
-
-
-    def show_go_screen(self):
         pass
 
 
