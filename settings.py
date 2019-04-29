@@ -1,10 +1,9 @@
 import pygame as pg
 vec = pg.math.Vector2
 
+# ▁ ▂ ▄ ▅ ▆ ▇ █Parametre du jeu█ ▇ ▆ ▅ ▄ ▂ ▁
 
-
-
-# define some colors (R, G, B)
+# colors (R, G, B)
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 DARKGREY = (40, 40, 40)

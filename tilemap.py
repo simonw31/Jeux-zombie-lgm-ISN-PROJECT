@@ -55,7 +55,7 @@ class Camera:
         x = -target.rect.centerx + int(WIDTH / 2)
         y = -target.rect.centery + int(HEIGHT / 2)
 
-        # limit scrolling to map size
+        # limiter le scroling de la camera a la taille de la map
         x = min(0, x)  # left
         y = min(0, y)  # top
         x = max(-(self.width - WIDTH), x)  # right

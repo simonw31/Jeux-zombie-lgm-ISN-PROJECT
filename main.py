@@ -1,7 +1,3 @@
-# KidsCanCode - Game Development with Pygame video series
-# Tile-based game - Part 12
-# Loading Tiled Maps
-# Video link: https://youtu.be/QIXyj3WeyZM
 import pygame as pg
 import sys
 from os import path
@@ -11,7 +7,7 @@ from tilemap import *
 
 
 
-# HUD functions
+# HUD fonction
 
 
 def draw_player_health(surf, x, y, pct):
@@ -60,7 +56,7 @@ class Game:
             self.gun_flashes.append(pg.image.load(path.join(img_folder, img)).convert_alpha())
 
     def new(self):
-        # initialize all variables and do all the setup for a new game
+        # initialise toute les variable et s'occupe de setup le jeux pour une nouvelle partie.
         self.all_sprites = pg.sprite.LayeredUpdates()
         self.walls = pg.sprite.Group()
         self.mobs = pg.sprite.Group()
@@ -92,7 +88,7 @@ class Game:
         self.draw_debug = False
 
     def run(self):
-        # game loop - set self.playing = False to end the game
+        # game loop (boucle du jeux)- set self.playing = False pour fin du jeux
         self.playing = True
         while self.playing:
             self.dt = self.clock.tick(FPS) / 1000.0  # fix for Python 2.x
@@ -107,10 +103,10 @@ class Game:
         sys.exit()
 
     def update(self):
-        # update portion of the game loop
+        # mise a jour requise du game loop
         self.all_sprites.update()
         self.camera.update(self.player)
-        # mobs hit player
+        # mobs hits(entre en collision) avec le player
         hits = pg.sprite.spritecollide(self.player, self.mobs, False, collide_hit_rect)
         for hit in hits:
             self.player.health -= MOB_DAMAGE
@@ -120,7 +116,7 @@ class Game:
         if hits:
             self.player.pos += vec(MOB_KNOCKBACK, 0).rotate(-hits[0].rot)
 
-        # bullets hit mobs
+        # bullets hit(entre en collision) avec les mobs
         hits = pg.sprite.groupcollide(self.mobs, self.bullets, False, True)
         for hit in hits:
             hit.health -= BULLET_DAMAGE
@@ -175,7 +171,7 @@ class Game:
 
 
     def events(self):
-        # catch all events here
+        # EVENTS
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 self.quit()
@@ -190,7 +186,7 @@ class Game:
         pass
 
 
-# create the game object
+# affichage du jeu
 
 g = Game()
 g.show_start_screen()
